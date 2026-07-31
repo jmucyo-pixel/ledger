@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledger — plan around what's actually on the calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="brand">
+      <span class="brand-mark">§</span>
+      <div>
+        <h1>Ledger</h1>
+        <p class="tagline">deadlines, weighed against the days you actually have</p>
+      </div>
+    </div>
+    <div class="masthead-meta">
+      <span id="today-label" class="mono"></span>
+    </div>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- LEFT: Ledger of deadlines -->
+  <section class="ledger-panel" aria-label="Your deadlines">
+    <div class="panel-head">
+      <h2>Entries</h2>
+      <button id="add-btn" class="btn-primary">+ New entry</button>
+    </div>
+
+    <div class="controls">
+      <input id="search-input" type="search" placeholder="Search entries…" class="mono">
+      <select id="filter-select" class="mono">
+        <option value="all">All categories</option>
+        <option value="school">School</option>
+        <option value="work">Work</option>
+        <option value="personal">Personal</option>
+      </select>
+      <select id="sort-select" class="mono">
+        <option value="date-asc">Soonest first</option>
+        <option value="date-desc">Latest first</option>
+        <option value="priority">By priority</option>
+        <option value="alpha">A–Z</option>
+      </select>
+    </div>
+
+    <ul id="entry-list" class="entry-list" aria-live="polite"></ul>
+    <p id="empty-state" class="empty-state" hidden>
+      No entries logged yet. Add one — an empty ledger tells you nothing.
+    </p>
+  </section>
+
+  <!-- RIGHT: Month calendar with holiday/event overlay -->
+  <aside class="calendar-panel" aria-label="Month view with holidays">
+    <div class="panel-head">
+      <h2 id="month-label">—</h2>
+      <div class="month-nav">
+        <button id="prev-month" class="btn-ghost" aria-label="Previous month">‹</button>
+        <button id="next-month" class="btn-ghost" aria-label="Next month">›</button>
+      </div>
+    </div>
+
+    <div class="weekday-row mono">
+      <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+    </div>
+    <div id="calendar-grid" class="calendar-grid"></div>
+
+    <div class="legend mono">
+      <span><i class="dot dot-deadline"></i> deadline</span>
+      <span><i class="dot dot-holiday"></i> holiday</span>
+      <span><i class="dot dot-event"></i> event</span>
+    </div>
+
+    <div class="country-select">
+      <label for="country-input" class="mono">Holiday country code</label>
+      <input id="country-input" class="mono" maxlength="2" value="US" aria-describedby="country-hint">
+      <p id="country-hint" class="hint">ISO 3166 2-letter code, e.g. US, GB, RW, KE</p>
+    </div>
+
+    <details class="events-settings">
+      <summary class="mono">Optional: nearby events (Ticketmaster)</summary>
+      <label for="tm-key" class="mono">Your Ticketmaster API key</label>
+      <input id="tm-key" class="mono" type="password" placeholder="stored only in this browser">
+      <label for="tm-city" class="mono">City</label>
+      <input id="tm-city" class="mono" placeholder="e.g. Kigali">
+      <button id="tm-fetch" class="btn-ghost">Fetch events</button>
+      <p class="hint">Your key is saved in this browser's local storage only — never sent anywhere but Ticketmaster, and never committed to source control.</p>
+    </details>
+  </aside>
+
+</main>
+
+<!-- Add/Edit entry dialog -->
+<dialog id="entry-dialog">
+  <form id="entry-form" method="dialog">
+    <h2 id="dialog-title">New entry</h2>
+    <input type="hidden" id="entry-id">
+
+    <label for="entry-title" class="mono">Title</label>
+    <input id="entry-title" required placeholder="e.g. Submit lab report">
+
+    <label for="entry-date" class="mono">Due date</label>
+    <input id="entry-date" type="date" required>
+
+    <label for="entry-category" class="mono">Category</label>
+    <select id="entry-category">
+      <option value="school">School</option>
+      <option value="work">Work</option>
+      <option value="personal">Personal</option>
+    </select>
+
+    <label for="entry-priority" class="mono">Priority</label>
+    <select id="entry-priority">
+      <option value="1">Low</option>
+      <option value="2" selected>Medium</option>
+      <option value="3">High</option>
+    </select>
+
+    <label for="entry-notes" class="mono">Notes (optional)</label>
+    <textarea id="entry-notes" rows="2" placeholder="Any context worth remembering"></textarea>
+
+    <label for="entry-link" class="mono">Link (optional)</label>
+    <input id="entry-link" type="url" placeholder="https://example.com/meeting-doc">
+
+    <div class="dialog-actions">
+      <button type="button" id="delete-entry" class="btn-ghost danger" hidden>Delete</button>
+      <button type="button" id="cancel-dialog" class="btn-ghost">Cancel</button>
+      <button type="submit" id="save-entry" class="btn-primary">Save entry</button>
+    </div>
+  </form>
+</dialog>
+
+<footer class="site-footer mono">
+  Public holidays via <a href="https://date.nager.at/" target="_blank" rel="noopener">Nager.Date</a>.
+  Events via <a href="https://developer.ticketmaster.com/" target="_blank" rel="noopener">Ticketmaster Discovery API</a> (optional).
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

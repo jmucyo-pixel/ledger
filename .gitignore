@@ -1,0 +1,20 @@
+# Node / backend
+node_modules/
+backend/data.sqlite
+backend/data.sqlite-*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Any local env/secret files, should this project ever add a backend
+.env
+.env.*
+*.key
+*.pem
+
+# Logs
+*.log
