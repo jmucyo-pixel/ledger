@@ -1,7 +1,9 @@
 /* Ledger — deadline planner with public-holiday & event overlay */
 
 
-const API_BASE = '/api';
+const API_BASE = (location.port && location.port !== '80' && location.port !== '443')
+  ? 'http://localhost:3000/api'
+  : '/api';
 const COUNTRY_KEY = 'ledger.country';
 const TM_KEY_KEY = 'ledger.tmKey';
 const TM_CITY_KEY = 'ledger.tmCity';
@@ -54,8 +56,7 @@ async function deleteEntryApi(id) {
 }
 
 function showBanner(message) {
-  // Simple, dependency-free way to surface backend errors to the user
-  // without silently failing.
+
   console.error(message);
   alert(message);
 }
