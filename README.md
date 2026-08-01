@@ -6,6 +6,9 @@ whether a deadline lands on a holiday, plan around a long weekend, or notice
 a scheduling conflict before it's too late. Plain to-do lists don't give you
 that context; Ledger does.
 
+# Ledger video:  [ledger video link](https://youtu.be/qhoZiNwIHpY)
+# Leger app link: http://34.205.129.125/
+
 ## APIs used
 
 - **[Nager.Date](https://date.nager.at/)** — free public holiday API, no key
